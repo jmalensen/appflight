@@ -78,9 +78,10 @@ class TicketController extends Controller
      * Method to generate the seat number
      *
      * @param int $flightId
+     * @param string $currentSeat
      * @return array ['status' => '', 'result' => '']
      */
-    private function generateSeat($flightId){
+    private function generateSeat($flightId, $currentSeat = null){
 
         $rows = range('A', 'D');
         $numbers = range(1, 32);
@@ -102,7 +103,7 @@ class TicketController extends Controller
         do {
             $seat = $rows[array_rand($rows)] . $numbers[array_rand($numbers)];
             
-        } while (Ticket::where('flight_id', $flightId)->where('seat', $seat)->exists());
+        } while (($currentSeat && $seat == $currentSeat) || Ticket::where('flight_id', $flightId)->where('seat', $seat)->exists());
 
         return [
             'status' => 'success',
