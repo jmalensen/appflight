@@ -11,7 +11,7 @@ class FlightController extends Controller
      */
     public function index(){
 
-        $flights = Flight::select('id', 'source_airport', 'destination_airport')->get()->map(function($flight) {
+        $flights = Flight::select('id', 'departure_time', 'source_airport', 'destination_airport')->get()->map(function($flight) {
             return [
                 'id' => $flight->id,
                 'departure_time' => $flight->formatted_departure_time,
