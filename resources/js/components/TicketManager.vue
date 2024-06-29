@@ -38,6 +38,40 @@
         </div>
 
         <hr class="my-4" />
+
+        <!-- Cancel ticket -->
+        <div class="mb-3 card">
+            <div class="card-body">
+                <h2>Cancel ticket</h2>
+                <div class="form-group">
+                    <div class="mb-2">
+                        <label><i class="fa-solid fa-ticket-simple"></i> Ticket number</label>
+                        <input class="form-control" type="text" v-model="ticketNumberToCancel" placeholder="Ticket number to cancel" />
+                        <em v-if="errors.cancelTicket" class="text-error">{{ errors.cancelTicket }}</em>
+                    </div>
+
+                    <button class="btn btn-primary" @click="cancelTicket">Cancel ticket</button>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4" />
+
+        <!-- Change seat -->
+        <div class="mb-3 card">
+            <div class="card-body">
+                <h2>Change seat</h2>
+                <div class="form-group">
+                    <div class="mb-2">
+                        <label><i class="fa-solid fa-ticket-simple"></i> Ticket number</label>
+                        <input class="form-control" type="text" v-model="ticketNumberToChangeSeat" placeholder="Ticket number to change seat" />
+                        <em v-if="errors.changeSeat" class="text-error">{{ errors.changeSeat }}</em>
+                    </div>
+
+                    <button class="btn btn-primary" @click="">Change seat</button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -159,6 +193,36 @@
                         icon: 'error',
                         title: 'Oops...',
                         text: 'Error booking ticket: '+ error.response.data.message,
+                        timer: 4000,
+                        timerProgressBar: true,
+                    });
+                }
+            },
+
+            // Async method to cancel specified ticket number
+            async cancelTicket() {
+                // Check that a ticketNumber is entered
+                if(this.ticketNumberToCancel == ''){
+                    this.errors.cancelTicket = 'Please enter a ticket number to cancel';
+                    return;
+                }
+
+                try {
+                    await axios.delete(`/api/tickets/${this.ticketNumberToCancel}`);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Ticket cancelled successfully',
+                        text: 'Ticket is successfully cancelled!',
+                        timer: 4000,
+                        timerProgressBar: true,
+                    });
+
+                } catch (error) {
+                    console.error('Error cancelling ticket:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error cancelling ticket: '+ error.response.data.message,
                         timer: 4000,
                         timerProgressBar: true,
                     });
