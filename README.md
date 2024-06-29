@@ -43,3 +43,32 @@
 
 18- Populate the flights database with this seeder
 `./develop.sh artisan db:seed --class=FlightSeeder`
+
+For Vue.js (important in .env APP_URL=http://localhost:8090 here)
+`./develop.sh npm install`
+
+`./develop.sh npm run build`
+
+
+# /!\ For everyday use:
+
+1- Type `./develop.sh up -d` to start all docker containers
+2- Type `./develop.sh stop` to stop all docker containers
+
+3- Type `./develop.sh tinker` to start using Tinker
+
+
+Run the following command to clear the application cache:
+`./develop.sh artisan cache:clear`
+
+Run the following command to clear the configuration cache:
+`./develop.sh artisan config:clear`
+
+Run the following command to clear the route cache:
+`./develop.sh artisan route:clear`
+
+Finally, run the following command to generate a new route cache:
+`./develop.sh artisan route:cache`
+
+`./develop.sh artisan view:cache`
+`./develop.sh artisan view:clear`
