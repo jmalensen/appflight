@@ -40,7 +40,30 @@ class Flight extends Model
         'destination_airport'
     ];
 
+    public static $rules = [
+		'departure_time' => ['required', 'date'],
+        'source_airport' => ['string', 'max:255', 'required'],
+        'destination_airport' => ['string', 'max:255', 'required'],
+	];
+
+    /**
+	 * The attributes that should be cast to native types.
+	 *
+	 * @var array
+	 */
+    protected $casts = [
+		'departure_time' => 'datetime',
+		'source_airport' => 'string',
+		'destination_airport' => 'string',
+	];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     */
+    protected $hidden = ['created_at', 'updated_at', 'deleted_at'];
+
     protected $appends = ['formatted_departure_time'];
+
 
     /**
      * Method to get departure time in the following format: Y-m-d H:i
