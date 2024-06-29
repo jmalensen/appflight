@@ -2,6 +2,11 @@
     <div class="container pt-4">
         <h1 class="text-center"><i class="fa-solid fa-plane-up"></i> Flight Ticket Booking</h1>
 
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchDarkMode" v-model="isDarkMode">
+            <label class="form-check-label" for="flexSwitchDarkMode"><span v-html="switchLabel"></span></label>
+        </div>
+
         <!-- Booking ticket with selection of flight -->
         <div class="mb-3 card">
             <div class="card-body">
@@ -88,6 +93,7 @@
                 passengerName: '',
                 ticketNumberToCancel: '',
                 ticketNumberToChangeSeat: '',
+                isDarkMode: false,
                 errors: {
                     booking: {},
                     cancelTicket: '',
@@ -97,6 +103,20 @@
         },
         mounted() {
             this.getFlights();
+        },
+        computed: {
+            switchLabel() {
+                return this.isDarkMode ? 'Dark mode <i class="fa-solid fa-moon"></i>' : 'Light mode <i class="fa-solid fa-sun"></i>';
+            }
+        },
+        watch: {
+            isDarkMode(newVal) {
+                if (newVal) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.classList.remove('dark-mode');
+                }
+            }
         },
         methods: {
             handleChangeFlight(){

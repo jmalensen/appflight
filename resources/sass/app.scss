@@ -10,6 +10,28 @@ body{
     font-size:$font-size-normal;
 }
 
+body.dark-mode{
+    background-color: $black;
+    color: $white;
+
+    .card{
+        background-color: $darkgrey;
+        color: $white;
+
+        input, select{
+            background-color: $lightgrey;
+        }
+
+        .text-error{
+            color: $lightred;
+        }
+    }
+
+    hr{
+        border-color: $lightergrey;
+    }
+}
+
 h1 {
     font-size: $font-size-big-title;
     margin-bottom: 20px;
