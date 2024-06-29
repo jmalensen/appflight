@@ -33,6 +33,12 @@ button {
     padding: 5px 10px;
 }
 
+.text-error{
+    display: block;
+    font-size:$font-size-errors;
+    color: $lightred;
+}
+
 hr{
     border: 10px solid;
     border-radius: 50%;

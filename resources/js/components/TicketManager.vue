@@ -9,23 +9,27 @@
 
                 <div class="form-group mb-3">
                     <label for="flight-select"><i class="fa-solid fa-plane-departure"></i> Select flight</label>
-                    <select class="form-control" v-model="selectedFlight" id="flight-select">
+                    <select class="form-control" v-model="selectedFlight" id="flight-select" @change="handleChangeFlight">
                         <option value="0" selected>Select flight</option>
                         <option v-for="flight in flights" :key="flight.id" :value="flight.id">
                             {{ flight.source_airport }} to {{ flight.destination_airport }} at {{ flight.departure_time }}
                         </option>
                     </select>
+
+                    <em v-if="errors.booking.selectedFlight" class="text-error">{{ errors.booking.selectedFlight }}</em>
                 </div>
                 
                 <div class="form-group">
                     <div class="mb-3">
                         <label><i class="fa-solid fa-passport"></i> Passport number</label>
-                        <input class="form-control" type="text" v-model="passportNumber" placeholder="Passport number" />
+                        <input class="form-control" type="text" v-model="passportNumber" placeholder="Passport number" @input="handleChangePassportNumber" />
+                        <em v-if="errors.booking.passportNumber" class="text-error">{{ errors.booking.passportNumber }}</em>
                     </div>
 
                     <div class="mb-2">
                         <label><i class="fa-solid fa-user"></i> Passenger name</label>
-                        <input class="form-control" type="text" v-model="passengerName" placeholder="Passenger name" />
+                        <input class="form-control" type="text" v-model="passengerName" placeholder="Passenger name" @input="handleChangePassengerName" />
+                        <em v-if="errors.booking.passengerName" class="text-error">{{ errors.booking.passengerName }}</em>
                     </div>
 
                     <button class="btn btn-primary" @click="createTicket">Create ticket</button>
@@ -48,12 +52,43 @@
                 selectedFlight: 0,
                 passportNumber: '',
                 passengerName: '',
+                ticketNumberToCancel: '',
+                ticketNumberToChangeSeat: '',
+                errors: {
+                    booking: {},
+                    cancelTicket: '',
+                    changeSeat: '',
+                },
             };
         },
         mounted() {
             this.getFlights();
         },
         methods: {
+            handleChangeFlight(){
+                // Check that a flight is selected
+                if (!this.selectedFlight) {
+                    this.errors.booking.selectedFlight = 'Please select a flight';
+                } else{
+                    this.errors.booking.selectedFlight = '';
+                }
+            },
+            handleChangePassportNumber(){
+                // Check that a passportNumber is entered
+                if (this.passportNumber == '') {
+                    this.errors.booking.passportNumber = 'Please enter a passport number';
+                } else{
+                    this.errors.booking.passportNumber = '';
+                }
+            },
+            handleChangePassengerName(){
+                // Check that a passengerName is entered
+                if (this.passengerName == '') {
+                    this.errors.booking.passengerName = 'Please enter a passenger name';
+                } else{
+                    this.errors.booking.passengerName = '';
+                }
+            },
 
             // Async method to get all flights in DB
             async getFlights() {
@@ -80,6 +115,11 @@
                         title: 'Ticket created successfully',
                         text: 'Ticket number: '+response.data.ticket.ticket_number +' Seat: '+ response.data.ticket.seat,
                     });
+
+                    // Clear input fields after successful creation
+                    this.selectedFlight = 0;
+                    this.passportNumber = '';
+                    this.passengerName = '';
 
                 } catch (error) {
                     console.error('Error booking ticket:', error);
