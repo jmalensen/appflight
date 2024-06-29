@@ -1,0 +1,111 @@
+version: "3.8"
+
+services:
+
+  # Application
+  applarav:
+    container_name: applarav
+    restart: unless-stopped
+    tty: true
+    build: ./docker/php
+    depends_on:
+      - dblarav
+      - appnod
+    ports:
+      - "9010:9000"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    working_dir: /var/www/html
+    networks:
+      - laravwork
+
+  # For node
+  appnod:
+    container_name: appnod
+    restart: unless-stopped
+    tty: true
+    build: ./docker/node
+    env_file: .env
+    ports:
+      - "3000:3000"
+      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
+    volumes:
+      - ./:/var/www/html
+      - ~/.ssh:/var/www/.ssh
+    working_dir: /var/www/html
+    networks:
+      - laravwork
+
+  # Web Server
+  webserv:
+    container_name: webserv
+    restart: unless-stopped
+    tty: true
+    build: ./docker/nginx
+    command: nginx -g "daemon off;"
+    depends_on:
+      - applarav
+    ports:
+      - "8090:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/logs:/var/log/nginx
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - laravwork
+
+  # Database
+  dblarav:
+    image: mysql:8.0.27
+    container_name: dblarav
+    restart: unless-stopped
+    tty: true
+    env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "33061:3306"
+    command: '--default-authentication-plugin=mysql_native_password'
+    volumes:
+      - ./mysqldata:/var/lib/mysql
+      #- ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - laravwork
+
+  # PhpMyAdmin
+  pmalarav:
+    image: phpmyadmin/phpmyadmin
+    container_name: pmalarav
+    depends_on:
+      - dblarav
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: ${DB_HOST}
+      PMA_PORT: ${DB_PORT}
+      PMA_USER: ${DB_USERNAME}
+      PMA_PASSWORD: ${DB_PASSWORD}
+    restart: always
+    tty: true
+    ports:
+      - "8096:80"
+    volumes:
+      - phpmyadmin:/var/www/html
+    networks:
+      - laravwork
+
+volumes:
+  phpmyadmin:
+    driver: local
+
+networks:
+  laravwork:
+    driver: bridge
