@@ -231,6 +231,12 @@
 
             // Async method to change seat of specified ticket number
             async changeSeat() {
+                // Check that a ticketNumber is entered
+                if(this.ticketNumberToChangeSeat == ''){
+                    this.errors.changeSeat = 'Please enter a ticket number to change the seat';
+                    return;
+                }
+
                 try {
                     const response = await axios.put(`/api/tickets/${this.ticketNumberToChangeSeat}/seat`);
                     Swal.fire({
@@ -241,6 +247,13 @@
 
                 } catch (error) {
                     console.error('Error updating seat:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error updating seat: '+ error.response.data.message,
+                        timer: 4000,
+                        timerProgressBar: true,
+                    });
                 }
             },
 
