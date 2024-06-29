@@ -40,3 +40,6 @@
 
 17- Type `./develop.sh artisan migrate` to migrate the default Laravel tables
 `./develop.sh artisan migrate:fresh` to drop all tables and do all migrations again
+
+18- Populate the flights database with this seeder
+`./develop.sh artisan db:seed --class=FlightSeeder`
