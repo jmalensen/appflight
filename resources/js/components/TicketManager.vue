@@ -51,7 +51,7 @@
                 <div class="form-group">
                     <div class="mb-2">
                         <label><i class="fa-solid fa-ticket-simple"></i> Ticket number</label>
-                        <input class="form-control" type="text" v-model="ticketNumberToCancel" placeholder="Ticket number to cancel" />
+                        <input class="form-control" type="text" v-model="ticketNumberToCancel" placeholder="Ticket number to cancel" @input="handleChangeTicketNumberToCancel" />
                         <em v-if="errors.cancelTicket" class="text-error">{{ errors.cancelTicket }}</em>
                     </div>
 
@@ -69,7 +69,7 @@
                 <div class="form-group">
                     <div class="mb-2">
                         <label><i class="fa-solid fa-ticket-simple"></i> Ticket number</label>
-                        <input class="form-control" type="text" v-model="ticketNumberToChangeSeat" placeholder="Ticket number to change seat" />
+                        <input class="form-control" type="text" v-model="ticketNumberToChangeSeat" placeholder="Ticket number to change seat" @input="handleChangeTicketNumberToChangeSeat" />
                         <em v-if="errors.changeSeat" class="text-error">{{ errors.changeSeat }}</em>
                     </div>
 
@@ -141,6 +141,23 @@
                     this.errors.booking.passengerName = 'Please enter a passenger name';
                 } else{
                     this.errors.booking.passengerName = '';
+                }
+            },
+
+            handleChangeTicketNumberToCancel(){
+                // Check that a TicketNumber is entered
+                if (this.ticketNumberToCancel == '') {
+                    this.errors.cancelTicket = 'Please enter a ticket number';
+                } else{
+                    this.errors.cancelTicket = '';
+                }
+            },
+            handleChangeTicketNumberToChangeSeat(){
+                // Check that a TicketNumber is entered
+                if (this.ticketNumberToChangeSeat == '') {
+                    this.errors.changeSeat = 'Please enter a ticket number';
+                } else{
+                    this.errors.changeSeat = '';
                 }
             },
 
