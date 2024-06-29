@@ -79,6 +79,11 @@ class TicketController extends Controller
 
         $newSeatResult = $this->generateSeat($ticket->flight_id, $ticket->seat);
 
+        // If no more seat are available
+        if($newSeatResult['status'] == 'error'){
+            return response()->json(['message' => $newSeatResult['result'].', your seat remained the same: '.$ticket->seat], 503);
+        }
+
         $ticket->seat = $newSeatResult['result'];
         $ticket->save();
 
