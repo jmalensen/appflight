@@ -50,6 +50,39 @@ For Vue.js (important in .env APP_URL=http://localhost:8090 here)
 `./develop.sh npm run build`
 
 
+Go to "http://localhost:8090"
+
+# Test creation of ticket
+In the card "Booking a ticket",
+you need to:
+- select a flight, (don't forget the seeder!)
+- enter a valid passport number,
+- enter a valid passenger name,
+=> you get a ticket number and a seat number in the alert window.
+
+## Test passport numbers
+14CV28142
+900010172
+AK0219304
+
+## Passenger name can't have number in their names
+
+
+# Test cancellation of ticket (you need to create a ticket first)
+In the card "Cancelling a ticket",
+you need to:
+- enter a ticket number
+=> you get a confirmation about the cancellation in the alert window.
+
+
+# Test changing of ticket (you need to create a ticket first)
+In the card "Changing seat a ticket",
+you need to:
+- enter a ticket number
+=> you get a ticket number and a new seat number in the alert window.
+
+
+
 # /!\ For everyday use:
 
 1- Type `./develop.sh up -d` to start all docker containers
