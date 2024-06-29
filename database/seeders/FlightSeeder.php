@@ -16,10 +16,10 @@ class FlightSeeder extends Seeder
     private function generateRandomFutureDate() {
         // Define the range for the future date
         $daysToAdd = rand(1, 365); // Random number of days between 1 and 365
-
-        $hoursToAdd = rand(1, 24); // Random number of hours between 1 and 24
     
-        // Create a random future date
+        $hoursToAdd = rand(0, 23); // Random number of hours between 0 and 23
+
+        // Create a random future date and add random hours
         $randomFutureDate = \Carbon\Carbon::now()->addDays($daysToAdd)->addHours($hoursToAdd);
     
         return $randomFutureDate;
