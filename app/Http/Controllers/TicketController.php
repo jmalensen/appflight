@@ -49,7 +49,16 @@ class TicketController extends Controller
      * @return Response
      */
     public function cancel($ticketNumber){
+        $ticket = Ticket::whereTicketNumber($ticketNumber)->first();
 
+        // If no ticket found
+        if (empty($ticket)) {
+            return response()->json(['message' => 'Ticket not found'], 404);
+        }
+
+        $ticket->delete();
+
+        return response()->json(['message' => 'Ticket cancelled successfully'], 200);
     }
 
 
