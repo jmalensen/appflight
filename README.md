@@ -4,7 +4,7 @@
 
 2- Copy .env.example to .env (usually in a git repo, informations about the DB would not be in the .env.example file)
 
-3- Install docker and make sure the file develop.sh has correct rights (chmod 745 or chmod 744 develop.sh)
+3- Install docker and make sure the file develop.sh has correct rights (chmod 745 or chmod 744 develop.sh, if you want access to the DB file, create the folder mysqldata at the root)
 
 4- Type `./develop.sh up -d` to prepare the required docker containers
 
