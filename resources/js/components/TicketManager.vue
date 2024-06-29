@@ -104,6 +104,38 @@
             // Async method to create a ticket for a specified flight
             async createTicket() {
 
+                this.clearErrors();
+
+                // Check that a flight is selected
+                if (!this.selectedFlight) {
+                    this.errors.booking.selectedFlight = 'Please select a flight';
+                    return;
+                }
+
+                // Check that a passportNumber is entered
+                if(this.passportNumber == ''){
+                    this.errors.booking.passportNumber = 'Please enter a passport number';
+                    return;
+                }
+                // Check that a valid passportNumber is entered
+                const passportRegex = /^[a-zA-Z0-9]{6,9}$/;
+                if (!passportRegex.test(this.passportNumber)) {
+                    this.errors.booking.passportNumber = 'Please enter a valid passport number';
+                    return;
+                }
+
+                // Check that a passengerName is entered
+                if(this.passengerName == ''){
+                    this.errors.booking.passengerName = 'Please enter a passenger name';
+                    return;
+                }
+                // Check that a valid passengerName is entered
+                const passengerRegex = /^[a-zA-Z]*$/;
+                if (!passengerRegex.test(this.passengerName)) {
+                    this.errors.booking.passengerName = 'Please enter a valid passenger name';
+                    return;
+                }
+
                 try {
                     const response = await axios.post('/api/tickets', {
                         flight_id: this.selectedFlight,
@@ -123,9 +155,24 @@
 
                 } catch (error) {
                     console.error('Error booking ticket:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error booking ticket: '+ error.response.data.message,
+                        timer: 4000,
+                        timerProgressBar: true,
+                    });
                 }
             },
 
+            // Reset errors texts
+            clearErrors() {
+                this.errors = {
+                    booking: {},
+                    cancelTicket: '',
+                    changeSeat: '',
+                };
+            },
         }
     };
 </script>
