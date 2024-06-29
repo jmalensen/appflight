@@ -9,3 +9,31 @@
 body{
     font-size:$font-size-normal;
 }
+
+h1 {
+    font-size: $font-size-big-title;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: $font-size-small-title;
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+select, input, button {
+    display: block;
+}
+
+button {
+    padding: 5px 10px;
+}
+
+hr{
+    border: 10px solid;
+    border-radius: 50%;
+}
