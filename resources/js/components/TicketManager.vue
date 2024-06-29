@@ -68,7 +68,7 @@
                         <em v-if="errors.changeSeat" class="text-error">{{ errors.changeSeat }}</em>
                     </div>
 
-                    <button class="btn btn-primary" @click="">Change seat</button>
+                    <button class="btn btn-primary" @click="changeSeat">Change seat</button>
                 </div>
             </div>
         </div>
@@ -226,6 +226,21 @@
                         timer: 4000,
                         timerProgressBar: true,
                     });
+                }
+            },
+
+            // Async method to change seat of specified ticket number
+            async changeSeat() {
+                try {
+                    const response = await axios.put(`/api/tickets/${this.ticketNumberToChangeSeat}/seat`);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Seat updated successfully',
+                        text: 'Ticket number: '+response.data.ticket.ticket_number +' New seat: '+ response.data.ticket.seat,
+                    });
+
+                } catch (error) {
+                    console.error('Error updating seat:', error);
                 }
             },
 
