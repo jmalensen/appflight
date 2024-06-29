@@ -70,7 +70,19 @@ class TicketController extends Controller
      * @return Response
      */
     public function updateSeat(Request $request, $ticketNumber){
+        $ticket = Ticket::whereTicketNumber($ticketNumber)->first();
 
+        // If no ticket found
+        if (empty($ticket)) {
+            return response()->json(['message' => 'Ticket not found'], 404);
+        }
+
+        $newSeatResult = $this->generateSeat($ticket->flight_id, $ticket->seat);
+
+        $ticket->seat = $newSeatResult['result'];
+        $ticket->save();
+
+        return response()->json(['message' => 'Seat updated successfully', 'ticket' => $ticket], 200);
     }
 
 
